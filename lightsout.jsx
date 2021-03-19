@@ -18,104 +18,97 @@ function LightsOutButton(props) {
     }
 }
 
-class LightsOut extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            lights: Array(
-                Array(5).fill(false),
-                Array(5).fill(false),
-                Array(5).fill(false),
-                Array(5).fill(false),
-                Array(5).fill(false),
-            ),
-            win: false,
-        }
-    }
+function LightsOut() {
+    const [lights, setLights] = React.useState(
+        Array(
+            Array(5).fill(false),
+            Array(5).fill(false),
+            Array(5).fill(false),
+            Array(5).fill(false),
+            Array(5).fill(false),
+        )
+    );
+    const [win, setWin] = React.useState(false);
 
-    renderButton(i, j) {
+    const renderButton = (i, j) => {
         return (
             <LightsOutButton
-              on={this.state.lights[i][j]}
-              onClick = {() => this.handleClick(i, j)}
+              on={lights[i][j]}
+              onClick = {() => handleClick(i, j)}
             />
         );
-    }
+    };
 
-    handleClick(i, j) {
-        const lights = this.state.lights.slice();
-        let win = false;
-        let len = lights.length - 1;
+    const handleClick = (i, j) => {
+        const newLights = lights.slice();
+        let newWin = false;
+        let len = newLights.length - 1;
         let sum = 0;
 
-        lights[i][j] = !lights[i][j];
+        newLights[i][j] = !newLights[i][j];
         if (i < len) {
-            lights[i+1][j] = !lights[i+1][j]
+            newLights[i+1][j] = !newLights[i+1][j]
         }
         if (j < len) {
-            lights[i][j+1] = !lights[i][j+1]
+            newLights[i][j+1] = !newLights[i][j+1]
         }
         if (i > 0) {
-            lights[i-1][j] = !lights[i-1][j]
+            newLights[i-1][j] = !newLights[i-1][j]
         }
         if (j > 0) {
-            lights[i][j-1] = !lights[i][j-1]
+            newLights[i][j-1] = !newLights[i][j-1]
         }
 
         for (let x = 0; x < len; x++) {
-            sum += lights[x].filter(Boolean).length;
+            sum += newLights[x].filter(Boolean).length;
         }
         if (sum == 0) {
-            win = true;
+            newWin = true;
         }
 
-        this.setState({
-            lights: lights,
-            win: win,
-        })
+        setLights(newLights);
+        setWin(newWin);
     }
 
-    render() {
-        return (
+    return (
+        <div>
             <div>
-              <div>
-                {this.renderButton(0, 0)}
-                {this.renderButton(0, 1)}
-                {this.renderButton(0, 2)}
-                {this.renderButton(0, 3)}
-                {this.renderButton(0, 4)}
-              </div>
-              <div>
-                {this.renderButton(1, 0)}
-                {this.renderButton(1, 1)}
-                {this.renderButton(1, 2)}
-                {this.renderButton(1, 3)}
-                {this.renderButton(1, 4)}
-              </div>
-              <div>
-                {this.renderButton(2, 0)}
-                {this.renderButton(2, 1)}
-                {this.renderButton(2, 2)}
-                {this.renderButton(2, 3)}
-                {this.renderButton(2, 4)}
-              </div>
-              <div>
-                {this.renderButton(3, 0)}
-                {this.renderButton(3, 1)}
-                {this.renderButton(3, 2)}
-                {this.renderButton(3, 3)}
-                {this.renderButton(3, 4)}
-              </div>
-              <div>
-                {this.renderButton(4, 0)}
-                {this.renderButton(4, 1)}
-                {this.renderButton(4, 2)}
-                {this.renderButton(4, 3)}
-                {this.renderButton(4, 4)}
-              </div>
+            {renderButton(0, 0)}
+            {renderButton(0, 1)}
+            {renderButton(0, 2)}
+            {renderButton(0, 3)}
+            {renderButton(0, 4)}
             </div>
-        )
-    }
+            <div>
+            {renderButton(1, 0)}
+            {renderButton(1, 1)}
+            {renderButton(1, 2)}
+            {renderButton(1, 3)}
+            {renderButton(1, 4)}
+            </div>
+            <div>
+            {renderButton(2, 0)}
+            {renderButton(2, 1)}
+            {renderButton(2, 2)}
+            {renderButton(2, 3)}
+            {renderButton(2, 4)}
+            </div>
+            <div>
+            {renderButton(3, 0)}
+            {renderButton(3, 1)}
+            {renderButton(3, 2)}
+            {renderButton(3, 3)}
+            {renderButton(3, 4)}
+            </div>
+            <div>
+            {renderButton(4, 0)}
+            {renderButton(4, 1)}
+            {renderButton(4, 2)}
+            {renderButton(4, 3)}
+            {renderButton(4, 4)}
+            </div>
+        </div>
+    )
 }
 
 const domContainer = document.querySelector('#lightsout_container');
