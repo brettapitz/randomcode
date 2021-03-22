@@ -1,4 +1,5 @@
 function LightsOutButton(props) {
+    // Button gets it's on/off value from the LightsOut parent
     if (props.on) {
         return (
             <img
@@ -19,17 +20,16 @@ function LightsOutButton(props) {
 }
 
 function LightsOut() {
-    const [lights, setLights] = React.useState(
-        Array(
-            Array(5).fill(false),
-            Array(5).fill(false),
-            Array(5).fill(false),
-            Array(5).fill(false),
-            Array(5).fill(false),
-        )
-    );
+    // Create a deep copy of level array, so the original still
+    // exists for reset
+    let level = JSON.parse(JSON.stringify(game_data.levels[0]));
+
+    // State
+    const [current, setCurrent] = React.useState(0);
+    const [lights, setLights] = React.useState(level);
     const [win, setWin] = React.useState(false);
 
+    // Create buttons
     const renderButton = (i, j) => {
         return (
             <LightsOutButton
@@ -39,9 +39,9 @@ function LightsOut() {
         );
     };
 
+    // Button press
     const handleClick = (i, j) => {
         const newLights = lights.slice();
-        let newWin = false;
         let len = newLights.length - 1;
         let sum = 0;
 
@@ -63,11 +63,25 @@ function LightsOut() {
             sum += newLights[x].filter(Boolean).length;
         }
         if (sum == 0) {
-            newWin = true;
+            setWin(true)
         }
 
         setLights(newLights);
-        setWin(newWin);
+    }
+
+    // Level select
+    const handleChange = (event) => {
+        let val = event.target.value
+        setCurrent(val);
+        reset(val);
+    }
+
+    // Reset button
+    // Note: Cannot reset using "current" state - need to pass a parameter.
+    // States update asynchronously, so one should never depend upon another.
+    const reset = (l) => {
+        level = JSON.parse(JSON.stringify(game_data.levels[l]));
+        setLights(level);
     }
 
     return (
@@ -106,6 +120,19 @@ function LightsOut() {
             {renderButton(4, 2)}
             {renderButton(4, 3)}
             {renderButton(4, 4)}
+            </div>
+            <div className="lightsout_controls">
+              <select value={current} onChange={handleChange}>
+                <option value="0">Level 1</option>
+                <option value="1">Level 2</option>
+                <option value="2">Level 3</option>
+                <option value="3">Level 4</option>
+                <option value="4">Level 5</option>
+                <option value="5">Level 6</option>
+                <option value="6">Level 7</option>
+                <option value="7">Empty Board</option>
+              </select>
+              <button onClick={() => reset(current)}>Reset</button>
             </div>
         </div>
     )
