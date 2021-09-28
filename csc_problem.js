@@ -7,8 +7,10 @@ module.exports = function sortCategoriesForInsert (inputJson) {
     // Turn input data into a Map keyed to parent_id; elements with null parent_id 
     // are pushed to a queue for later.
     // Map values are stored as arrays to allow for multiple elements with the same parent.
+    
     for (const el of data) {
         const pid = el.parent_id;
+        
         if (pid == null) {
             queue.push(el);
         } else if (mp.has(pid)) {
@@ -21,6 +23,7 @@ module.exports = function sortCategoriesForInsert (inputJson) {
     // Iterate through parent elements in queue, keying into map with their ids
     // to get their children. Children are added to a new queue, and the old queue 
     // is moved to ret.
+    
     while (ret.length != data.length) {
         var temp = [];
         
