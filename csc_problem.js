@@ -8,12 +8,13 @@ module.exports = function sortCategoriesForInsert (inputJson) {
     // are pushed to a queue for later.
     // Map values are stored as arrays to allow for multiple elements with the same parent.
     for (const el of data) {
-        if (el.parent_id == null) {
+        const pid = el.parent_id;
+        if (pid == null) {
             queue.push(el);
-        } else if (mp.has(el.parent_id)) {
-            mp.get(el.parent_id).push(el)
+        } else if (mp.has(pid)) {
+            mp.get(pid).push(el)
         } else {
-            mp.set(el.parent_id, [el]);
+            mp.set(pid, [el]);
         }
     }
 
@@ -22,13 +23,16 @@ module.exports = function sortCategoriesForInsert (inputJson) {
     // is moved to ret.
     while (ret.length != data.length) {
         var temp = [];
+        
         for (const el of queue) {
             if (mp.has(el.id)) {
                 temp.push(...mp.get(el.id));
             }
         }
+
         ret.push(...queue);
         queue = temp;
     }
+
     return JSON.stringify(ret);
 }
