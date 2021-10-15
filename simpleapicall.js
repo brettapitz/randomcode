@@ -1,9 +1,9 @@
 const age = document.getElementById('agify_output');
 let name_in = document.getElementById('agify_input');
+name_in.addEventListener("change", () => getAge());
 // Can arrow functions not be passed by name? This isn't the first time
 // I've had to use the '() => func()' syntax. Last time I blamed it on React,
 // but is this just a stupid JavaScript thing?
-name_in.addEventListener("change", () => getAge());
 
 const getAge = () => {
   let url = 'https://api.agify.io/?name=' + name_in.value;
