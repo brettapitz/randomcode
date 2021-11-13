@@ -26,10 +26,9 @@ function drawScope() {
   canvasctx.fillStyle = bgColor;
   canvasctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  canvasctx.beginPath();
-
   let x = 0;
   let y = 0;
+  canvasctx.beginPath();
   for (let datum of scopeData) {
     y = canvas.height/2 * (1 + datum);
     x += sampleSpacing;
