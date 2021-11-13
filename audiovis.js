@@ -1,7 +1,10 @@
 const canvas = document.getElementById('vis_canvas');
 const canvasctx = canvas.getContext('2d');
-const audioctx = new (window.AudioContext || window.webkitAudioContext)();
+let audioctx = new (window.AudioContext || window.webkitAudioContext)();
 const audioEl = document.querySelector('audio');
+audioEl.onplay = () => {
+  audioctx.resume();
+}
 const source = audioctx.createMediaElementSource(audioEl);
 const analyser = audioctx.createAnalyser();
 var visOption = document.getElementsByClassName('active')[0];
