@@ -10,15 +10,15 @@ var options = document.getElementsByClassName('vis_option');
 source.connect(analyser).connect(audioctx.destination);
 
 analyser.fftSize=4096;
+canvasctx.strokeStyle = '#0ff';
+canvasctx.lineWidth = 2;
 const bgColor = 'black';
-const lineColor = '#0ff';
 const freqBarColor = '#0ff';
 const freqBarHeightMult = 1.5;
-const lineWidth = 2;
+const freqBarSpacer = 2;
+const sampleSpacing = canvas.width / analyser.fftSize;
 const scopeData = new Float32Array(analyser.fftSize);
 const freqData = new Uint8Array(analyser.fftSize/2);
-const sampleWidth = canvas.width / analyser.fftSize;
-const freqBarSpacer = 2;
 
 function drawScope() {
   analyser.getFloatTimeDomainData(scopeData);
@@ -26,15 +26,13 @@ function drawScope() {
   canvasctx.fillStyle = bgColor;
   canvasctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  canvasctx.strokeStyle = lineColor;
-  canvasctx.lineWidth = lineWidth;
   canvasctx.beginPath();
 
   let x = 0;
   let y = 0;
   for (let datum of scopeData) {
     y = canvas.height/2 * (1 + datum);
-    x += sampleWidth;
+    x += sampleSpacing;
     canvasctx.lineTo(x, y);
   }
   canvasctx.stroke();
